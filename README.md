@@ -16,3 +16,8 @@ dentro de este archivo existe un funcion la cual recibe un nombre y te regresa u
 #Librerias 
 pandas se utiliza para leer y escribir archivos en db con python
 pip install pandas
+
+
+
+#Recomendaciones 
+En los archivos extract se debe colocar el nombre de las tablas con minusculas.

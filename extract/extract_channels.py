@@ -7,7 +7,13 @@ import pandas as pd
 
 def extract_channels():
     try:
-        ses_db_stg = connect(getProperty("DBSTG"));
+        
+
+        
+        name_DB = getProperty("DBSTG")
+        path_channels_csv = getProperty("PCSVCHANNELS")
+        
+        ses_db_stg = connect(name_DB);
         
         #Dictionary for values of chanels
         cha_dict = {
@@ -18,7 +24,7 @@ def extract_channels():
         }
         
         #Reading the csv file
-        channel_csv = pd.read_csv('CSVS/channels.csv')
+        channel_csv = pd.read_csv(path_channels_csv)
         
         if not channel_csv.empty:
             for id,desc,cla,cla_id in zip(

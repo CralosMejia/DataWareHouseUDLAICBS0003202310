@@ -1,6 +1,7 @@
+from extract.extract_countries import extract_countries
 from util.db_connection import connect
 from util.properties import getProperty
-from extract.extract_channels import extract_channels
+from extract.extract_channels import *
 
 
 import traceback
@@ -17,8 +18,10 @@ try:
     """
     
     #Test extract channels
-    extract_channels();
+    #extract_channels();
     
+    #Test extract countries
+    extract_countries();
     
     
 except:
