@@ -1,6 +1,8 @@
 from extract.extract_countries import extract_countries
 from extract.extract_channels import extract_channels
 from extract.extract_customers import extract_customers
+from extract.extract_products import extract_products
+
 
 
 from util.db_connection import connect
@@ -27,7 +29,10 @@ try:
     #extract_countries();
     
     #Test extract countries
-    extract_customers();
+    #extract_customers();
+    
+    #Test extract countries
+    extract_products()
     
 except:
     traceback.print_exc()
