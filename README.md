@@ -1,8 +1,8 @@
 ## Tabla de contenidos.
-1. [Información general](#general-info)
-2. [Tenologias](#technologies)
-3. [Instalación](#installation)
-3. [Dependencias Utlizadas](#installation)
+1. [Información general](#información-general)
+2. [Tenologias](#tecnologias)
+3. [Instalación](#instalación)
+3. [Dependencias Utlizadas](#dependencias-utilizadas)
 
 ### Información general
 ***
