@@ -1,7 +1,10 @@
 from extract.extract_countries import extract_countries
+from extract.extract_channels import extract_channels
+from extract.extract_customers import extract_customers
+
+
 from util.db_connection import connect
 from util.properties import getProperty
-from extract.extract_channels import *
 
 
 import traceback
@@ -21,8 +24,10 @@ try:
     #extract_channels();
     
     #Test extract countries
-    extract_countries();
+    #extract_countries();
     
+    #Test extract countries
+    extract_customers();
     
 except:
     traceback.print_exc()
