@@ -17,12 +17,7 @@ Las tecnologías que se usaron para el proyecto son:
 ## Instalación
 ***
 Para la instalación lo único que tiene que hacer es descargar el programa.
-```
-$ git clone https://example.com
-$ cd ../path/to/the/file
-$ npm install
-$ npm start
-```
+
 ## Dependencias Utilizadas.
 Para el correcto funcionamiento del programa se debe instalar las siguientes dependencias.
 
