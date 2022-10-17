@@ -1,23 +1,47 @@
-#coneccion a la base de datos.
-Hay que instalar lo que se muestra a continuacion e importar para poder usar sqlalchemy que nos ayuda con la coneccion a la base de datos. 
+## Tabla de contenidos.
+1. [Información general](#general-info)
+2. [Tenologias](#technologies)
+3. [Instalación](#installation)
+3. [Dependencias Utlizadas](#installation)
+
+### Información general
+***
+El proyecto está orientado al entendimiento, creación y manejo de un data warehouse mediante la implementación de un ejemplo sencillo con una base de datos de apenas 7 tablas, La información necesaria para llenar las tablas se extrajo de archivos .csv. 
+
+## Tecnologias.
+***
+Las tecnologías que se usaron para el proyecto son:
+* [Python](https://www.python.org): Version 3.10.8 
+* [MYSQL](https://www.mysql.com): Version 5.7.38
+
+## Instalación
+***
+Para la instalación lo único que tiene que hacer es descargar el programa.
+```
+$ git clone https://example.com
+$ cd ../path/to/the/file
+$ npm install
+$ npm start
+```
+## Dependencias Utilizadas.
+Para el correcto funcionamiento del programa se debe instalar las siguientes dependencias.
+
+
+###Conexión a la base de datos.
+```
 pip install sqlalchemy
+```
+```
 pip install PyMySQL
-
-Dentro del archivo db_connection.py se creó una funcion llamada connect a la cual se le debe pasar el nombre de la base de datos y nos retornará una sesión(Para la coneccion a la DB usa las variables de entorno del archivo properties).
-
-#Properties
-Para usar un archivo .properties se intala la siguiente libreria
+```
+###Archivo Propiedades.
+```
 pip install jproperties
-
-luego dentro de la carpeta util
-se crea un archivo propertiesConfig. py el cual nos ayudara a leer las propiedades.
-dentro de este archivo existe un funcion la cual recibe un nombre y te regresa una propiedad.
-
-#Librerias 
-pandas se utiliza para leer y escribir archivos en db con python
+```
+###Pandas
+```
 pip install pandas
+```
 
 
 
-#Recomendaciones 
-En los archivos extract se debe colocar el nombre de las tablas con minusculas.
