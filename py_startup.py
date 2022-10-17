@@ -2,6 +2,8 @@ from extract.extract_countries import extract_countries
 from extract.extract_channels import extract_channels
 from extract.extract_customers import extract_customers
 from extract.extract_products import extract_products
+from extract.extract_promotions import extract_promotions
+
 
 
 
@@ -28,11 +30,14 @@ try:
     #Test extract countries
     #extract_countries();
     
-    #Test extract countries
+    #Test extract customers
     #extract_customers();
     
-    #Test extract countries
-    extract_products()
+    #Test extract products
+    #extract_products()
+    
+    #Test extract promotions
+    extract_promotions()
     
 except:
     traceback.print_exc()
