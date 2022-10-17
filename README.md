@@ -22,18 +22,18 @@ Para la instalación lo único que tiene que hacer es descargar el programa.
 Para el correcto funcionamiento del programa se debe instalar las siguientes dependencias.
 
 
-###Conexión a la base de datos.
+### Conexión a la base de datos.
 ```
 pip install sqlalchemy
 ```
 ```
 pip install PyMySQL
 ```
-###Archivo Propiedades.
+### Archivo Propiedades.
 ```
 pip install jproperties
 ```
-###Pandas
+### Pandas
 ```
 pip install pandas
 ```
