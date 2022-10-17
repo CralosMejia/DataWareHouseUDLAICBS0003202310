@@ -4,6 +4,8 @@ from extract.extract_customers import extract_customers
 from extract.extract_products import extract_products
 from extract.extract_promotions import extract_promotions
 from extract.extract_sales import extract_sales
+from extract.extract_times import extract_times
+
 
 
 
@@ -42,7 +44,10 @@ try:
     #extract_promotions()
     
     #Test extract sales
-    extract_sales()
+    #extract_sales()
+    
+    #Test extract times
+    extract_times()
     
 except:
     traceback.print_exc()
