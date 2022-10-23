@@ -1,3 +1,4 @@
+from transform.transformation import obt_date
 from util.db_connection import connect
 from util.properties import getProperty
 
@@ -5,12 +6,11 @@ import traceback
 import pandas as pd
 
 
-def extract_promotions():
+def transform_promotions(ID):
     try:
         #"PROMO_ID","PROMO_NAME","PROMO_COST","PROMO_BEGIN_DATE","PROMO_END_DATE"
                 
         name_DB = getProperty("DBSTG")
-        path_promotions_csv = getProperty("PCSVPROMOTIONS")
         
         ses_db_stg = connect(name_DB);
         
@@ -20,31 +20,32 @@ def extract_promotions():
             "promo_name":[],
             "promo_cost":[],
             "promo_begin_date":[],
-            "promo_end_date":[]
+            "promo_end_date":[],
+            "process_id":[]
         }
         
         #Reading the csv file
-        promotions_csv = pd.read_csv(path_promotions_csv)
+        promotions_ext_table = pd.read_sql('SELECT PROMO_ID,PROMO_NAME,PROMO_COST,PROMO_BEGIN_DATE,PROMO_END_DATE FROM promotions_ext', ses_db_stg)
         
-        if not promotions_csv.empty:
+        if not promotions_ext_table.empty:
             for id,name,promCost,promBegDate,promEndDate in zip(
-                promotions_csv["PROMO_ID"],
-                promotions_csv["PROMO_NAME"],
-                promotions_csv["PROMO_COST"],
-                promotions_csv["PROMO_BEGIN_DATE"],
-                promotions_csv["PROMO_END_DATE"]
+                promotions_ext_table["PROMO_ID"],
+                promotions_ext_table["PROMO_NAME"],
+                promotions_ext_table["PROMO_COST"],
+                promotions_ext_table["PROMO_BEGIN_DATE"],
+                promotions_ext_table["PROMO_END_DATE"]
                 ):
                 
                 promotions_dict["promo_id"].append(id)
                 promotions_dict["promo_name"].append(name)
                 promotions_dict["promo_cost"].append(promCost)
-                promotions_dict["promo_begin_date"].append(promBegDate)
-                promotions_dict["promo_end_date"].append(promEndDate)
+                promotions_dict["promo_begin_date"].append(obt_date(promBegDate))
+                promotions_dict["promo_end_date"].append(obt_date(promEndDate))
+                promotions_dict["process_id"].append(ID)
                 
         if promotions_dict["promo_id"]:
-            ses_db_stg.connect().execute('TRUNCATE TABLE promotions_ext')
-            df_promotions_ext = pd.DataFrame(promotions_dict)
-            df_promotions_ext.to_sql('promotions_ext',ses_db_stg,if_exists='append',index=False)
+            df_promotions_tra = pd.DataFrame(promotions_dict)
+            df_promotions_tra.to_sql('promotions_tra',ses_db_stg,if_exists='append',index=False)
                 
     except:
         traceback.print_exc()

@@ -5,14 +5,16 @@ import traceback
 import pandas as pd
 
 
-def extract_sales():
+def load_sales():
     try:
         #"PROD_ID","CUST_ID","TIME_ID","CHANNEL_ID","PROMO_ID","QUANTITY_SOLD","AMOUNT_SOLD"
                 
-        name_DB = getProperty("DBSTG")
-        path_sales_csv = getProperty("PCSVSALES")
+        name_DB_stg = getProperty("DBSTG")
+        name_DB_sor = getProperty("DBSOR")
         
-        ses_db_stg = connect(name_DB);
+        
+        ses_db_stg = connect(name_DB_stg);
+        ses_db_sor = connect(name_DB_sor);
         
         #Dictionary for values of chanels
         sales_dict = {
@@ -27,17 +29,17 @@ def extract_sales():
         }
         
         #Reading the csv file
-        sales_csv = pd.read_csv(path_sales_csv)
+        sales_tra_table = pd.read_sql('SELECT PROD_ID,CUST_ID,TIME_ID,CHANNEL_ID,PROMO_ID,QUANTITY_SOLD,AMOUNT_SOLD FROM sales_tra', ses_db_stg)
         
-        if not sales_csv.empty:
+        if not sales_tra_table.empty:
             for prodId,custId,timeId,channelId,promoId,quantiSold,amountSold in zip(
-                sales_csv["PROD_ID"],
-                sales_csv["CUST_ID"],
-                sales_csv["TIME_ID"],
-                sales_csv["CHANNEL_ID"],
-                sales_csv["PROMO_ID"],
-                sales_csv["QUANTITY_SOLD"],
-                sales_csv["AMOUNT_SOLD"],
+                sales_tra_table["PROD_ID"],
+                sales_tra_table["CUST_ID"],
+                sales_tra_table["TIME_ID"],
+                sales_tra_table["CHANNEL_ID"],
+                sales_tra_table["PROMO_ID"],
+                sales_tra_table["QUANTITY_SOLD"],
+                sales_tra_table["AMOUNT_SOLD"],
                 
                 ):
                 
@@ -51,9 +53,8 @@ def extract_sales():
                 
                 
         if sales_dict["prod_id"]:
-            ses_db_stg.connect().execute('TRUNCATE TABLE sales_ext')
-            df_sales_ext = pd.DataFrame(sales_dict)
-            df_sales_ext.to_sql('sales_ext',ses_db_stg,if_exists='append',index=False)
+            df_sales_load = pd.DataFrame(sales_dict)
+            df_sales_load.to_sql('sales',ses_db_sor,if_exists='append',index=False)
                 
     except:
         traceback.print_exc()

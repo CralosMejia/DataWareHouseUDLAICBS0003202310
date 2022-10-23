@@ -5,12 +5,11 @@ import traceback
 import pandas as pd
 
 
-def extract_countries():
+def transform_countries(ID):
     try:
         #"COUNTRY_ID","COUNTRY_NAME","COUNTRY_REGION","COUNTRY_REGION_ID"
         
         name_DB = getProperty("DBSTG")
-        path_coutries_csv = getProperty("PCSVCOUNTRIES")
         
         ses_db_stg = connect(name_DB);
         
@@ -19,29 +18,30 @@ def extract_countries():
             "country_id":[],
             "country_name":[],
             "country_region":[],
-            "country_region_id":[]
+            "country_region_id":[],
+            "process_id":[]
         }
         
         #Reading the csv file
-        country_csv = pd.read_csv(path_coutries_csv)
+        country_ext_table = pd.read_sql('SELECT COUNTRY_ID,COUNTRY_NAME,COUNTRY_REGION,COUNTRY_REGION_ID FROM countries_ext', ses_db_stg)
         
-        if not country_csv.empty:
+        if not country_ext_table.empty:
             for id,name,region,region_id in zip(
-                country_csv["COUNTRY_ID"],
-                country_csv["COUNTRY_NAME"],
-                country_csv["COUNTRY_REGION"],
-                country_csv["COUNTRY_REGION_ID"]
+                country_ext_table["COUNTRY_ID"],
+                country_ext_table["COUNTRY_NAME"],
+                country_ext_table["COUNTRY_REGION"],
+                country_ext_table["COUNTRY_REGION_ID"]
                 ):
                 
                 country_dict["country_id"].append(id)
                 country_dict["country_name"].append(name)
                 country_dict["country_region"].append(region)
                 country_dict["country_region_id"].append(region_id)
+                country_dict["process_id"].append(ID)
                 
         if country_dict["country_id"]:
-            ses_db_stg.connect().execute('TRUNCATE TABLE countries_ext')
-            df_contries_ext = pd.DataFrame(country_dict)
-            df_contries_ext.to_sql('countries_ext',ses_db_stg,if_exists='append',index=False)
+            df_contries_tra = pd.DataFrame(country_dict)
+            df_contries_tra.to_sql('countries_tra',ses_db_stg,if_exists='append',index=False)
                 
     except:
         traceback.print_exc()
