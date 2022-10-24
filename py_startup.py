@@ -5,6 +5,7 @@ from load.load_products import load_products
 from load.load_promotions import load_promotions
 from load.load_sales import load_sales
 from load.load_times import load_times
+from load.loads import obt_process_ID
 from transform.transform_customers import transform_customers
 from transform.transform_countries import transform_countries
 from transform.transform_channels import transform_channels
@@ -72,7 +73,10 @@ try:
     #load_times()
     #load_sales()
     
-    create_process_ID()
+    # create_process_ID()
+    
+    # print(obt_process_ID())
+    
 except:
     traceback.print_exc()
 finally:

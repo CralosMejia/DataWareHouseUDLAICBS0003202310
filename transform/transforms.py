@@ -46,7 +46,10 @@ def create_process_ID():
     
     table_process = pd.read_sql('SELECT ID FROM process_etl ORDER by ID DESC LIMIT 1', ses_db_stg)
     
-    id = table_process['ID'][0]
+    if(not table_process.empty):
+        id = table_process['ID'][0]
+    else:
+        id = None;
     
     return id;
     

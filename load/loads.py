@@ -20,20 +20,31 @@ from util.properties import getProperty
 import traceback
 import pandas as pd
 
+def loads():
+    try:
+        ID = obt_process_ID()
+        
+        #LOAD
+        load_channels(ID)
+        # load_countries()
+        # load_customers()
+        # load_products()
+        # load_promotions()
+        # load_times()
+        # load_sales()
+        
+    except:
+        traceback.print_exc()
+    finally:
+        pass
 
-try:
+def obt_process_ID():
+    ses_db_stg = connect(getProperty("DBSTG"));
+    table_process = pd.read_sql('SELECT ID FROM process_etl ORDER by ID DESC LIMIT 1', ses_db_stg)
     
-    #LOAD
-    load_channels()
-    load_countries()
-    load_customers()
-    load_products()
-    load_promotions()
-    load_times()
-    load_sales()
+    if(not table_process.empty):
+        id = table_process['ID'][0]
+    else:
+        id = None;
     
-    create_process_ID()
-except:
-    traceback.print_exc()
-finally:
-    pass
+    return id;
