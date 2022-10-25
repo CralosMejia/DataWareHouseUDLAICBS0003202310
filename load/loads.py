@@ -26,12 +26,12 @@ def loads():
         
         #LOAD
         load_channels(ID)
-        # load_countries()
-        # load_customers()
-        # load_products()
-        # load_promotions()
-        # load_times()
-        # load_sales()
+        load_countries(ID)
+        #load_products(ID)
+        #load_promotions(ID)
+        #load_times(ID)
+        #load_customers(ID)
+        #load_sales(ID)
         
     except:
         traceback.print_exc()

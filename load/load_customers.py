@@ -1,13 +1,13 @@
-from transform.transformation import obt_gender
-from transform.transformation import join_2_strings
 from util.db_connection import connect
 from util.properties import getProperty
+from util.sql import merge
+
 
 import traceback
 import pandas as pd
 
 
-def load_customers():
+def load_customers(ID):
     try:
         #"CUST_ID","CUST_FIRST_NAME","CUST_LAST_NAME","CUST_GENDER","CUST_YEAR_OF_BIRTH","CUST_MARITAL_STATUS","CUST_STREET_ADDRESS","CUST_POSTAL_CODE","CUST_CITY","CUST_STATE_PROVINCE","COUNTRY_ID","CUST_MAIN_PHONE_NUMBER","CUST_INCOME_LEVEL","CUST_CREDIT_LIMIT","CUST_EMAIL"
                 
@@ -33,12 +33,16 @@ def load_customers():
             "cust_main_phone_number":[],
             "cust_income_level":[],
             "cust_credit_limit":[],
-            "cust_email":[]
+            "cust_email":[],
+            "process_id": []
         }
         
         #Reading the csv file
-        customers_tra_table = pd.read_sql('SELECT CUST_ID,CUST_FULL_NAME,CUST_GENDER,CUST_YEAR_OF_BIRTH,CUST_MARITAL_STATUS,CUST_STREET_ADDRESS,CUST_POSTAL_CODE,CUST_CITY,CUST_STATE_PROVINCE,COUNTRY_ID,CUST_MAIN_PHONE_NUMBER,CUST_INCOME_LEVEL,CUST_CREDIT_LIMIT,CUST_EMAIL FROM customers_tra', ses_db_stg)
-        
+        customers_tra_table = pd.read_sql(f'SELECT CUST_ID,CUST_FULL_NAME,CUST_GENDER,CUST_YEAR_OF_BIRTH,CUST_MARITAL_STATUS,CUST_STREET_ADDRESS,CUST_POSTAL_CODE,CUST_CITY,CUST_STATE_PROVINCE,COUNTRY_ID,CUST_MAIN_PHONE_NUMBER,CUST_INCOME_LEVEL,CUST_CREDIT_LIMIT,CUST_EMAIL FROM customers_tra WHERE PROCESS_ID = {ID} ', ses_db_stg)
+        customers_key_subrrogate_countries = pd.read_sql_query('SELECT ID, COUNTRY_ID FROM countries', ses_db_sor).set_index('COUNTRY_ID').to_dict()['ID']
+
+        customers_tra_table['COUNTRY_ID'] = customers_tra_table['COUNTRY_ID'].apply(lambda key: customers_key_subrrogate_countries[key])
+
         if not customers_tra_table.empty:
             for id,name,gender,birth,maritalS,address,postalC,city,province,counrtyId,phone,incomeL,creditL,email in zip(
                 customers_tra_table["CUST_ID"],
@@ -71,11 +75,14 @@ def load_customers():
                 customers_dict["cust_income_level"].append(incomeL)
                 customers_dict["cust_credit_limit"].append(creditL)
                 customers_dict["cust_email"].append(email)
-                
+                customers_dict["process_id"].append(ID)
+
         if customers_dict["cust_id"]:
+
             df_customers_load = pd.DataFrame(customers_dict)
-            df_customers_load.to_sql('customers',ses_db_sor,if_exists='append',index=False)
-                
+            merge(table_name='customers', natural_key_cols=['CUST_ID'], dataframe= df_customers_load, db_context=ses_db_sor);
+
+
     except:
         traceback.print_exc()
     finally:

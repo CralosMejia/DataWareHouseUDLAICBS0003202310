@@ -1,15 +1,13 @@
 from util.db_connection import connect
 from util.properties import getProperty
-from transform.transformation import obt_date
-from transform.transformation import obt_month_number
-
+from util.sql import merge
 
 
 import traceback
 import pandas as pd
 
 
-def load_times():
+def load_times(ID):
     try:
         #"TIME_ID","DAY_NAME","DAY_NUMBER_IN_WEEK","DAY_NUMBER_IN_MONTH","CALENDAR_WEEK_NUMBER","CALENDAR_MONTH_NUMBER","CALENDAR_MONTH_DESC","END_OF_CAL_MONTH","CALENDAR_QUARTER_DESC","CALENDAR_YEAR"
                 
@@ -33,10 +31,11 @@ def load_times():
             "calendar_month_name":[],
             "calendar_quarter_desc":[],
             "calendar_year":[],
+            "process_id": []
         }
         
         #Reading the csv file
-        times_tra_table = pd.read_sql('SELECT TIME_ID,DAY_NAME,DAY_NUMBER_IN_WEEK,DAY_NUMBER_IN_MONTH,CALENDAR_WEEK_NUMBER,CALENDAR_MONTH_NUMBER,CALENDAR_MONTH_DESC,END_OF_CAL_MONTH,CALENDAR_MONTH_NAME,CALENDAR_QUARTER_DESC,CALENDAR_YEAR FROM times_tra', ses_db_stg)
+        times_tra_table = pd.read_sql(f'SELECT TIME_ID,DAY_NAME,DAY_NUMBER_IN_WEEK,DAY_NUMBER_IN_MONTH,CALENDAR_WEEK_NUMBER,CALENDAR_MONTH_NUMBER,CALENDAR_MONTH_DESC,END_OF_CAL_MONTH,CALENDAR_MONTH_NAME,CALENDAR_QUARTER_DESC,CALENDAR_YEAR FROM times_tra WHERE PROCESS_ID = {ID}', ses_db_stg)
         
         if not times_tra_table.empty:
             for timeId,dName,dnw,dnm,cwn,cmn,cmd,ecm,cmname,cqd,cy in zip(
@@ -64,12 +63,13 @@ def load_times():
                 times_dict["calendar_month_name"].append(cmname),
                 times_dict["calendar_quarter_desc"].append(cqd)
                 times_dict["calendar_year"].append(cy)
-                
+                times_dict["process_id"].append(ID)
                 
         if times_dict["time_id"]:
             df_times_tra = pd.DataFrame(times_dict)
-            df_times_tra.to_sql('times',ses_db_sor,if_exists='append',index=False)
-                
+            merge(table_name='times', natural_key_cols=['TIME_ID'], dataframe= df_times_tra, db_context=ses_db_sor);
+
+
     except:
         traceback.print_exc()
     finally:

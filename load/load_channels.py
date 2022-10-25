@@ -1,5 +1,6 @@
 from util.db_connection import connect
 from util.properties import getProperty
+from util.sql import merge
 
 import traceback
 import pandas as pd
@@ -46,17 +47,9 @@ def load_channels(ID):
                 
                 
         if cha_dict["CHANNEL_ID"]:
-
-            table_sor = pd.read_sql("SELECT CHANNEL_ID,CHANNEL_DESC,CHANNEL_CLASS,CHANNEL_CLASS_ID FROM channels", ses_db_sor)
             table_tra = pd.DataFrame(cha_dict)
-            print(table_tra)
-            print(table_sor)
-            if table_sor.empty:
-                table_tra.to_sql('channels', ses_db_sor, if_exists='append', index=False)
-            else:
-                df_channels = pd.concat([table_sor, table_tra]).groupby(["CHANNEL_ID"], as_index=False).last()
-                print(df_channels)
-                df_channels.to_sql('channels', ses_db_sor, if_exists='replace', index=False)
+            #table_tra.to_sql('channels', ses_db_sor, if_exists='append', index=False)
+            merge(table_name='channels', natural_key_cols=['CHANNEL_ID'], dataframe= table_tra, db_context=ses_db_sor);
 
 
     except:

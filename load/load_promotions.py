@@ -1,11 +1,12 @@
 from util.db_connection import connect
 from util.properties import getProperty
+from util.sql import merge
 
 import traceback
 import pandas as pd
 
 
-def load_promotions():
+def load_promotions(ID):
     try:
         #"PROMO_ID","PROMO_NAME","PROMO_COST","PROMO_BEGIN_DATE","PROMO_END_DATE"
                 
@@ -22,11 +23,12 @@ def load_promotions():
             "promo_name":[],
             "promo_cost":[],
             "promo_begin_date":[],
-            "promo_end_date":[]
+            "promo_end_date":[],
+            "process_id": []
         }
         
         #Reading the csv file
-        promotions_tra_table = pd.read_sql('SELECT PROMO_ID,PROMO_NAME,PROMO_COST,PROMO_BEGIN_DATE,PROMO_END_DATE FROM promotions_tra', ses_db_stg)
+        promotions_tra_table = pd.read_sql(f'SELECT PROMO_ID,PROMO_NAME,PROMO_COST,PROMO_BEGIN_DATE,PROMO_END_DATE FROM promotions_tra WHERE PROCESS_ID = {ID}', ses_db_stg)
         
         if not promotions_tra_table.empty:
             for id,name,promCost,promBegDate,promEndDate in zip(
@@ -42,11 +44,12 @@ def load_promotions():
                 promotions_dict["promo_cost"].append(promCost)
                 promotions_dict["promo_begin_date"].append(promBegDate)
                 promotions_dict["promo_end_date"].append(promEndDate)
+                promotions_dict["process_id"].append(ID)
                 
         if promotions_dict["promo_id"]:
             df_promotions_load = pd.DataFrame(promotions_dict)
-            df_promotions_load.to_sql('promotions',ses_db_sor,if_exists='append',index=False)
-                
+            merge(table_name='promotions', natural_key_cols=['PROMO_ID'], dataframe= df_promotions_load, db_context=ses_db_sor);
+
     except:
         traceback.print_exc()
     finally:
