@@ -21,11 +21,11 @@ def load_channels(ID):
         
         #Dictionary for values of chanels
         cha_dict = {
-            "CHANNEL_ID":[],
-            "CHANNEL_DESC":[],
-            "CHANNEL_CLASS":[],
-            "CHANNEL_CLASS_ID":[],
-            "PROCESS_ID":[]
+            "channel_id":[],
+            "channel_desc":[],
+            "channel_class":[],
+            "channel_class_id":[],
+            "process_id":[]
         }
         
         #Reading the ext table
@@ -39,17 +39,17 @@ def load_channels(ID):
                 channel_tra_table["CHANNEL_CLASS_ID"]
                 ):
                 
-                cha_dict["CHANNEL_ID"].append(id)
-                cha_dict["CHANNEL_DESC"].append(desc)
-                cha_dict["CHANNEL_CLASS"].append(cla)
-                cha_dict["CHANNEL_CLASS_ID"].append(cla_id)
-                cha_dict["PROCESS_ID"].append(ID)
+                cha_dict["channel_id"].append(id)
+                cha_dict["channel_desc"].append(desc)
+                cha_dict["channel_class"].append(cla)
+                cha_dict["channel_class_id"].append(cla_id)
+                cha_dict["process_id"].append(ID)
                 
                 
-        if cha_dict["CHANNEL_ID"]:
+        if cha_dict["channel_id"]:
             table_tra = pd.DataFrame(cha_dict)
             #table_tra.to_sql('channels', ses_db_sor, if_exists='append', index=False)
-            merge(table_name='channels', natural_key_cols=['CHANNEL_ID'], dataframe= table_tra, db_context=ses_db_sor);
+            merge(table_name='channels', natural_key_cols=['channel_id'], dataframe= table_tra, db_context=ses_db_sor);
 
 
     except:

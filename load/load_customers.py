@@ -80,7 +80,7 @@ def load_customers(ID):
         if customers_dict["cust_id"]:
 
             df_customers_load = pd.DataFrame(customers_dict)
-            merge(table_name='customers', natural_key_cols=['CUST_ID'], dataframe= df_customers_load, db_context=ses_db_sor);
+            merge(table_name='customers', natural_key_cols=['cust_id'], dataframe= df_customers_load, db_context=ses_db_sor);
 
 
     except:

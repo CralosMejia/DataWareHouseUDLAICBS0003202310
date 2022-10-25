@@ -19,15 +19,14 @@ def merge(table_name, natural_key_cols, dataframe, db_context):
         dataframe['ID'] = dataframe.apply(lambda row: existing_table_key_pairs.get(tuple(row[natural_key_cols].values), None), axis=1)
 
     elements_to_update = dataframe[dataframe['ID'].notnull()]
+
     if not elements_to_update.empty:
         existing_elements = pandas.read_sql_query('SELECT * FROM {table_name} WHERE ID IN ({ids})'.format(table_name=table_name, ids=','.join(elements_to_update['ID'].astype(str))), db_context)
         elements_to_update = elements_to_update.merge(existing_elements, how='outer', indicator=True).query('_merge == "left_only"').drop('_merge', axis=1)
-        print(f'Updating {len(elements_to_update)} rows in {table_name}')
         update_query = f'UPDATE {table_name} SET {",".join([f"{col} = %s" for col in columns])} WHERE ID = %s'
         for index, row in elements_to_update.iterrows():
             db_context.execute(update_query, tuple(row[columns].values) + (row['ID'],))
 
     elements_to_insert = dataframe[dataframe['ID'].isnull()]
-    print(f'Inserting {len(elements_to_insert)} rows in {table_name}')
     if not elements_to_insert.empty:
         elements_to_insert.to_sql(table_name, db_context, if_exists='append', index=False)
