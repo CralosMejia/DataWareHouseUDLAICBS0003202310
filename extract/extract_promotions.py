@@ -45,7 +45,8 @@ def extract_promotions():
             ses_db_stg.connect().execute('TRUNCATE TABLE promotions_ext')
             df_promotions_ext = pd.DataFrame(promotions_dict)
             df_promotions_ext.to_sql('promotions_ext',ses_db_stg,if_exists='append',index=False)
-                
+        ses_db_stg.dispose()
+
     except:
         traceback.print_exc()
     finally:

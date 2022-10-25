@@ -68,7 +68,8 @@ def transform_times(ID):
         if times_dict["time_id"]:
             df_times_tra = pd.DataFrame(times_dict)
             df_times_tra.to_sql('times_tra',ses_db_stg,if_exists='append',index=False)
-                
+        ses_db_stg.dispose()
+
     except:
         traceback.print_exc()
     finally:

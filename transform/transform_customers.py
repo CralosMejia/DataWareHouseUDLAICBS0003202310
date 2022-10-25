@@ -76,7 +76,8 @@ def transform_customers(ID):
         if customers_dict["cust_id"]:
             df_customers_tra = pd.DataFrame(customers_dict)
             df_customers_tra.to_sql('customers_tra',ses_db_stg,if_exists='append',index=False)
-                
+        ses_db_stg.dispose()
+
     except:
         traceback.print_exc()
     finally:

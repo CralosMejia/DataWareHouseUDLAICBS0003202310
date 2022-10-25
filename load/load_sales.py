@@ -78,7 +78,8 @@ def load_sales(ID):
         if sales_dict["prod_id"]:
             df_sales_load = pd.DataFrame(sales_dict)
             merge(table_name='sales', natural_key_cols=['prod_id', 'cust_id', 'time_id', 'channel_id', 'promo_id'], dataframe= df_sales_load, db_context=ses_db_sor);
-
+        ses_db_stg.dispose()
+        ses_db_sor.dispose()
 
     except:
         traceback.print_exc()

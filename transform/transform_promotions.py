@@ -46,7 +46,8 @@ def transform_promotions(ID):
         if promotions_dict["promo_id"]:
             df_promotions_tra = pd.DataFrame(promotions_dict)
             df_promotions_tra.to_sql('promotions_tra',ses_db_stg,if_exists='append',index=False)
-                
+        ses_db_stg.dispose()
+
     except:
         traceback.print_exc()
     finally:

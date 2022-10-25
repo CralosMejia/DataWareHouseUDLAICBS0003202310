@@ -61,7 +61,8 @@ def extract_times():
             ses_db_stg.connect().execute('TRUNCATE TABLE times_ext')
             df_times_ext = pd.DataFrame(times_dict)
             df_times_ext.to_sql('times_ext',ses_db_stg,if_exists='append',index=False)
-                
+        ses_db_stg.dispose()
+
     except:
         traceback.print_exc()
     finally:

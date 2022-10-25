@@ -54,7 +54,8 @@ def extract_sales():
             ses_db_stg.connect().execute('TRUNCATE TABLE sales_ext')
             df_sales_ext = pd.DataFrame(sales_dict)
             df_sales_ext.to_sql('sales_ext',ses_db_stg,if_exists='append',index=False)
-                
+        ses_db_stg.dispose()
+
     except:
         traceback.print_exc()
     finally:

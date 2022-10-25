@@ -49,7 +49,8 @@ def load_promotions(ID):
         if promotions_dict["promo_id"]:
             df_promotions_load = pd.DataFrame(promotions_dict)
             merge(table_name='promotions', natural_key_cols=['promo_id'], dataframe= df_promotions_load, db_context=ses_db_sor);
-
+        ses_db_stg.dispose()
+        ses_db_sor.dispose()
     except:
         traceback.print_exc()
     finally:

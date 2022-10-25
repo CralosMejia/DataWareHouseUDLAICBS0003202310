@@ -43,7 +43,8 @@ def extract_channels():
             ses_db_stg.connect().execute('TRUNCATE TABLE channels_ext')
             df_channels_ext = pd.DataFrame(cha_dict)
             df_channels_ext.to_sql('channels_ext',ses_db_stg,if_exists='append',index=False)
-                
+        ses_db_stg.dispose()
+
     except:
         traceback.print_exc()
     finally:

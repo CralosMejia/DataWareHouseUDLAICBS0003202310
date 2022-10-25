@@ -42,7 +42,8 @@ def extract_countries():
             ses_db_stg.connect().execute('TRUNCATE TABLE countries_ext')
             df_contries_ext = pd.DataFrame(country_dict)
             df_contries_ext.to_sql('countries_ext',ses_db_stg,if_exists='append',index=False)
-                
+        ses_db_stg.dispose()
+
     except:
         traceback.print_exc()
     finally:

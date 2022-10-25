@@ -68,7 +68,8 @@ def load_times(ID):
         if times_dict["time_id"]:
             df_times_tra = pd.DataFrame(times_dict)
             merge(table_name='times', natural_key_cols=['time_id'], dataframe= df_times_tra, db_context=ses_db_sor);
-
+        ses_db_stg.dispose()
+        ses_db_sor.dispose()
 
     except:
         traceback.print_exc()

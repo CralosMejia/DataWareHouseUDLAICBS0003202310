@@ -68,7 +68,8 @@ def load_products(ID):
         if products_dict["prod_id"]:
             df_produtcs_load = pd.DataFrame(products_dict)
             merge(table_name='products', natural_key_cols=['prod_id'], dataframe= df_produtcs_load, db_context=ses_db_sor);
-
+        ses_db_stg.dispose()
+        ses_db_sor.dispose()
 
     except:
         traceback.print_exc()

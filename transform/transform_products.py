@@ -64,7 +64,8 @@ def transform_products(ID):
         if products_dict["prod_id"]:
             df_produtcs_tra = pd.DataFrame(products_dict)
             df_produtcs_tra.to_sql('products_tra',ses_db_stg,if_exists='append',index=False)
-                
+        ses_db_stg.dispose()
+
     except:
         traceback.print_exc()
     finally:

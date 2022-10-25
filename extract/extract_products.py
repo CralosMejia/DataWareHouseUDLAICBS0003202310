@@ -63,7 +63,8 @@ def extract_products():
             ses_db_stg.connect().execute('TRUNCATE TABLE products_ext')
             df_produtcs_ext = pd.DataFrame(products_dict)
             df_produtcs_ext.to_sql('products_ext',ses_db_stg,if_exists='append',index=False)
-                
+        ses_db_stg.dispose()
+
     except:
         traceback.print_exc()
     finally:

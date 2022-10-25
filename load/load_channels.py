@@ -50,7 +50,8 @@ def load_channels(ID):
             table_tra = pd.DataFrame(cha_dict)
             #table_tra.to_sql('channels', ses_db_sor, if_exists='append', index=False)
             merge(table_name='channels', natural_key_cols=['channel_id'], dataframe= table_tra, db_context=ses_db_sor);
-
+        ses_db_stg.dispose()
+        ses_db_sor.dispose()
 
     except:
         traceback.print_exc()

@@ -44,6 +44,8 @@ def transform_channels(ID):
         if cha_dict["channel_id"]:
             df_channels_tra = pd.DataFrame(cha_dict)
             df_channels_tra.to_sql('channels_tra',ses_db_stg,if_exists='append',index=False)
+        ses_db_stg.dispose()
+
                 
     except:
         traceback.print_exc()

@@ -46,6 +46,8 @@ def load_countries(ID):
         if country_dict["country_id"]:
             df_contries_load = pd.DataFrame(country_dict)
             merge(table_name='countries', natural_key_cols=['country_id'], dataframe= df_contries_load, db_context=ses_db_sor)
+        ses_db_stg.dispose()
+        ses_db_sor.dispose()
 
     except:
         traceback.print_exc()

@@ -75,7 +75,8 @@ def extract_customers():
             ses_db_stg.connect().execute('TRUNCATE TABLE customers_ext')
             df_customers_ext = pd.DataFrame(customers_dict)
             df_customers_ext.to_sql('customers_ext',ses_db_stg,if_exists='append',index=False)
-                
+        ses_db_stg.dispose()
+
     except:
         traceback.print_exc()
     finally:

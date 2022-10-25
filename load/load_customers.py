@@ -81,7 +81,8 @@ def load_customers(ID):
 
             df_customers_load = pd.DataFrame(customers_dict)
             merge(table_name='customers', natural_key_cols=['cust_id'], dataframe= df_customers_load, db_context=ses_db_sor);
-
+        ses_db_stg.dispose()
+        ses_db_sor.dispose()
 
     except:
         traceback.print_exc()
